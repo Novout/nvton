@@ -44,7 +44,6 @@
     "minor": "pnpm build && generi log minor",
     "major": "pnpm build && generi log major"
   },
-  "packageManager": "pnpm@10.14.0",
   "dependencies": {
     "destr": "^2.0.5",
     "fs-extra": "^11.3.2",
