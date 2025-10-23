@@ -1,0 +1,63 @@
+{
+  "name": "nvton",
+  "version": "0.0.0",
+  "description": "NVTON - Novout Object Notation",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Novout/nvton"
+  },
+  "bugs": {
+    "url": "https://github.com/Novout/nvton/issues"
+  },
+  "homepage": "https://github.com/Novout/nvton/",
+  "author": "Giovane Cardoso",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "package.json",
+    "LICENSE"
+  ],
+  "keywords": [
+    "object",
+    "notation",
+    "json",
+    "data"
+  ],
+  "scripts": {
+    "dev": "pnpm format && tsdown",
+    "dev:watch": "pnpm format && tsdown --watch",
+    "build": "pnpm format && tsdown --minify",
+    "test": "vitest run --coverage",
+    "test:dev": "vitest",
+    "format": "prettier --write src/ tests/",
+    "prepublishOnly": "pnpm build",
+    "patch": "pnpm build && generi log patch",
+    "minor": "pnpm build && generi log minor",
+    "major": "pnpm build && generi log major"
+  },
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "destr": "^2.0.5",
+    "fs-extra": "^11.3.2",
+    "pathe": "^2.0.3"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.9.1",
+    "@vitest/coverage-v8": "3.2.4",
+    "generi": "^1.4.1",
+    "prettier": "^3.6.2",
+    "tsdown": "^0.15.9",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}
