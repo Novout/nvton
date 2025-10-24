@@ -9,7 +9,6 @@ import {
 	WRONG_KEY,
 } from './constants';
 import { parseKey } from './parser';
-import { v4 } from 'uuid';
 import { LexerResult, LexerType } from './types';
 
 export const getNVTONType = (str: string): LexerType => {
@@ -27,7 +26,6 @@ const getCommonTypeCase = (str: string) => {
 
 	if (type === 'object' || type === 'default') {
 		return {
-			key: type === 'default' ? str : v4(),
 			data: parseKey(str, type),
 			type,
 		};
@@ -49,7 +47,10 @@ export const lex = (raw: string): LexerResult => {
 		.map((str) => {
 			const def = getCommonTypeCase(str);
 
-			if (def !== true) return def;
+			if (def !== true) return {
+        key: str,
+        ...def
+      };
 
 			if (!isTuple(str)) return [];
 
