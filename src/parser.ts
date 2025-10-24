@@ -1,6 +1,12 @@
-import destr from 'destr';
+import { destr } from 'destr';
+import { LexerType } from './types';
 
-export function parseKey<T = unknown>(raw: string) {
-	// TODO: strict: true with error support
-	return destr<T>(raw, { strict: false });
+const stringObjectToObject = (raw: string) => {
+	return raw.replace(/(\w+:)|(\w+ :)/g, (str) => {
+		return '"' + str.substring(0, str.length - 1) + '":';
+	});
+};
+
+export function parseKey<T = unknown>(raw: string, type: LexerType = 'default') {
+	return destr<T>(type === 'object' ? stringObjectToObject(raw) : raw, { strict: false });
 }

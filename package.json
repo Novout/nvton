@@ -38,7 +38,7 @@
     "build": "pnpm format && tsdown --minify",
     "test": "vitest run --coverage",
     "test:dev": "vitest",
-    "format": "prettier --write src/ tests/",
+    "format": "prettier --write src/ test/",
     "prepublishOnly": "pnpm build",
     "patch": "pnpm build && generi log patch",
     "minor": "pnpm build && generi log minor",
