@@ -11,5 +11,5 @@ export const getFile = (target: string): Maybe<string> => {
 
 	if (!existsPath) return undefined;
 
-	return readFileSync(path).toString() || undefined;
+	return readFileSync(path).toString('utf8') || undefined;
 };
