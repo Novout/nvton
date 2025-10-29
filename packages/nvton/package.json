@@ -1,0 +1,48 @@
+{
+	"name": "nvton",
+	"version": "0.0.0",
+	"description": "NVTON - Novout Object Notation",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Novout/nvton"
+	},
+	"bugs": {
+		"url": "https://github.com/Novout/nvton/issues"
+	},
+	"homepage": "https://github.com/Novout/nvton/",
+	"author": "Giovane Cardoso",
+	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
+	"type": "module",
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"default": "./dist/index.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"files": [
+		"dist/**/*",
+		"package.json",
+		"LICENSE"
+	],
+	"keywords": [
+		"object",
+		"notation",
+		"json",
+		"data"
+	],
+	"scripts": {
+		"dev": "tsdown",
+		"dev:watch": "tsdown --watch",
+		"build": "tsdown --minify"
+	}
+}
