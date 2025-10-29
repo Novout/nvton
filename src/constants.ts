@@ -22,3 +22,7 @@ export const NULL_KEY = '__NULL_KEY__';
 
 export const MIMETYPE = 'text/nvton';
 export const EXTENSION = '.nvton';
+
+export const DEFAULT_CONFIG = {
+	foo: 'foo',
+};

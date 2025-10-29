@@ -6,7 +6,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],
-      exclude: ['constants.ts', 'types.ts']
+      exclude: ['src/constants.ts', 'src/types.ts', 'src/index.ts']
     },
   },
 })

@@ -20,3 +20,11 @@ export const getFile = (target: string): Maybe<string> => {
 
 	return readFileSync(path).toString('utf8') || undefined;
 };
+
+export const isBrowser: boolean =
+	typeof window !== 'undefined' && typeof window.document !== 'undefined';
+
+export const isNode: boolean =
+	typeof process !== 'undefined' &&
+	process.versions != null &&
+	process.versions.node != null;

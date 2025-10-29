@@ -1,12 +1,20 @@
-import { getFile } from './utils';
+import { getFile, isBrowser } from './utils';
 import { lex } from './lexer';
 import { NVTON } from './data';
 
 const get = (raw: string): NVTON => {
-	const resolved = (raw.endsWith('.nvton') ? getFile(raw) : raw)?.trim();
+	const isFilepath = raw.endsWith('.nvton');
 
-	if (!resolved && resolved !== '') {
-		throw new Error(`${raw} file not found!`);
+	if (isFilepath && isBrowser) {
+		throw new Error(
+			'get() function only support read files in node, bun or deno environments.'
+		);
+	}
+
+	const resolved = (isFilepath ? getFile(raw) : raw)?.trim();
+
+	if (!resolved) {
+		throw new Error(`${raw} file not found or datatype is wrong!`);
 	}
 
 	const data = lex(resolved);

@@ -8,6 +8,8 @@ describe('NVTON', () => {
 		expect(data.get('0')).toEqual(0);
 	});
 	it('expect error in read', () => {
-		expect(() => nvton('null.nvton')).toThrowError('null.nvton file not found!');
+		expect(() => nvton('null.nvton')).toThrowError(
+			'null.nvton file not found or datatype is wrong!'
+		);
 	});
 });

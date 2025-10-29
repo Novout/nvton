@@ -1,14 +1,35 @@
+import { loadConfig } from 'c12';
 import { LexerKey, LexerResult, NvtonOptions } from './types';
-import { writeFile } from './utils';
+import { isBrowser, writeFile } from './utils';
+import { DEFAULT_CONFIG } from './constants';
 
 export class NVTON {
 	// TODO: unknown deep type
 	private data: Map<LexerKey, unknown>;
-	private options: NvtonOptions;
+	private options: NvtonOptions = DEFAULT_CONFIG;
 
-	constructor(lexeme: LexerResult) {
+	private async loadDefaultConfig(options?: NvtonOptions) {
+		try {
+			if (!isBrowser) {
+				// TODO: awaitable load fix config
+				const { config } = await loadConfig({
+					name: 'nvton',
+					rcFile: false,
+					envName: false,
+				});
+
+				this.options = options ?? config ?? DEFAULT_CONFIG;
+			} else {
+				this.options = options ?? DEFAULT_CONFIG;
+			}
+		} catch (e) {
+			this.options = options ?? DEFAULT_CONFIG;
+		}
+	}
+
+	constructor(lexeme: LexerResult, options?: NvtonOptions) {
 		this.data = new Map();
-		this.options = {};
+		this.loadDefaultConfig(options);
 		this.set(lexeme);
 	}
 
@@ -28,6 +49,10 @@ export class NVTON {
 	}
 
 	public write(path: string) {
+		if (isBrowser) {
+			throw new Error(`Browser setups don't support write function!`);
+		}
+
 		const filepath = path.endsWith('.nvton') ? path : `${path}.nvton`;
 		// TODO: format .nvton file
 		writeFile(filepath, '');
