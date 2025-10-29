@@ -6,7 +6,6 @@ export class NVTON {
 
 	constructor(lexeme: LexerResult) {
 		this.data = new Map();
-
 		this.set(lexeme);
 	}
 
@@ -14,28 +13,14 @@ export class NVTON {
 		lexeme.forEach((item) => {
 			if (Array.isArray(item)) this.set(item);
 			else {
+				// TODO: support custom keys
 				this.data.set(item.key, item.data);
 			}
 		});
 	}
 
-	public get(target: number | string) {
-		if (typeof target === 'number') {
-			return target;
-			/*
-			let index = 0;
-
-			this.data.forEach((value, key) => {
-				if (index === target) return value;
-
-				index++;
-			});
-
-			// TODO: better tracking
-			return undefined;
-      */
-		}
-
+	public get(target: string) {
+		// TODO: simple language for deep search
 		return this.data.get(target);
 	}
 }
