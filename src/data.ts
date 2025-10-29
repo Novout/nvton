@@ -1,5 +1,6 @@
 import { loadConfig } from 'c12';
-import { LexerKey, LexerResult, NvtonOptions } from './types';
+import { defu } from 'defu';
+import { Awaitable, LexerKey, LexerResult, NvtonOptions } from './types';
 import { isBrowser, writeFile } from './utils';
 import { DEFAULT_CONFIG } from './constants';
 
@@ -8,22 +9,25 @@ export class NVTON {
 	private data: Map<LexerKey, unknown>;
 	private options: NvtonOptions = DEFAULT_CONFIG;
 
-	private async loadDefaultConfig(options?: NvtonOptions) {
+	private loadDefaultConfig(options?: NvtonOptions): Awaitable<void> {
 		try {
 			if (!isBrowser) {
-				// TODO: awaitable load fix config
-				const { config } = await loadConfig({
-					name: 'nvton',
-					rcFile: false,
-					envName: false,
-				});
+				return new Promise(async (res, rej) => {
+					const { config } = await loadConfig({
+						name: 'nvton',
+						rcFile: false,
+						envName: false,
+					});
 
-				this.options = options ?? config ?? DEFAULT_CONFIG;
+					this.options = defu(defu(options, config), DEFAULT_CONFIG);
+
+					res();
+				});
 			} else {
-				this.options = options ?? DEFAULT_CONFIG;
+				this.options = defu(options, DEFAULT_CONFIG);
 			}
 		} catch (e) {
-			this.options = options ?? DEFAULT_CONFIG;
+			this.options = defu(options, DEFAULT_CONFIG);
 		}
 	}
 
