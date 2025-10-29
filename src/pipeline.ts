@@ -15,4 +15,3 @@ const get = (raw: string): NVTON => {
 };
 
 export const nvton = (raw: string) => get(raw);
-export const write = () => {};

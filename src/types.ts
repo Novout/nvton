@@ -9,3 +9,5 @@ export type LexerType = 'object' | 'tuple' | 'function' | 'default';
 export type LexerKey = string | number;
 export type LexerCommon = { key: string; data: unknown };
 export type LexerResult = (LexerCommon | LexerCommon[])[];
+
+export interface NvtonOptions {}

@@ -19,3 +19,6 @@ export const SPACE = ' ';
 
 export const WRONG_KEY = '__WRONG_KEY__';
 export const NULL_KEY = '__NULL_KEY__';
+
+export const MIMETYPE = 'text/nvton';
+export const EXTENSION = '.nvton';
