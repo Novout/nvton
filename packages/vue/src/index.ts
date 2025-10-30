@@ -1,4 +1,4 @@
-import { App, ComponentInternalInstance, getCurrentInstance, Plugin } from 'vue-demi';
+import { App, ComponentInternalInstance, getCurrentInstance, Plugin } from 'vue';
 import { nvton, NvtonOptions, type Nvton } from 'nvton';
 
 export const NVTONPlugin: Plugin = {
@@ -17,7 +17,7 @@ export const useNvton = (): Nvton => {
 	const instance = getCurrentInstance();
 
 	if (!instance) {
-		console.warn('[VUE-PDFEASY] - Vue instance not exists. Hook is in setup() context?');
+		console.warn('[VUE-NVTON] - Vue instance not exists. Hook is in setup() context?');
 	}
 
 	const pdf = (instance as ComponentInternalInstance).appContext.config.globalProperties

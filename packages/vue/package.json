@@ -1,6 +1,10 @@
 {
 	"name": "vue-nvton",
-	"author": "Novout",
+	"author": {
+		"email": "novout@hotmail.com",
+		"name": "Giovane Cardoso",
+		"url": "https://github.com/Novout"
+	},
 	"license": "MIT",
 	"version": "0.0.0",
 	"description": "A nvton plugin for Vue 3",
@@ -29,17 +33,7 @@
 		"vue"
 	],
 	"dependencies": {
-		"nvton": "workspace:*",
-		"vue-demi": "latest"
-	},
-	"peerDependencies": {
-		"@vue/composition-api": "^1.0.0-rc.1",
-		"vue": "^2.0.0 || >=3.0.0"
-	},
-	"peerDependenciesMeta": {
-		"@vue/composition-api": {
-			"optional": true
-		}
+		"nvton": "workspace:*"
 	},
 	"devDependencies": {
 		"vue": "^3.5.22"
@@ -49,6 +43,6 @@
 		"package.json"
 	],
 	"engines": {
-		"node": ">= 18"
+		"node": ">= 20"
 	}
 }

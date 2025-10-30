@@ -1,6 +1,6 @@
 import { getFile, isBrowser } from './utils';
 import { lex } from './lexer';
-import { NVTON } from './data';
+import { NVTON } from './nvton';
 import { NvtonOptions } from './types';
 import { DEFAULT_CONFIG, EXTENSION } from './constants';
 

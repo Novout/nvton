@@ -1,14 +1,14 @@
 import path from 'pathe';
 import { Awaitable, Maybe } from './types';
-import { existsSync, readFileSync, writeFileSync } from 'fs-extra';
+import { existsSync, readFileSync, writeFile as write } from 'fs-extra';
 
 export const getPathResolve = (target: string) => path.resolve(process.cwd(), target);
 export const getPathJoin = (target: string) => path.join(process.cwd(), target);
 
-export const writeFile = (file: string, data: string): Awaitable<void> => {
+export const writeFile = async (file: string, data: string): Promise<void> => {
 	const target = getPathJoin(file);
 
-	writeFileSync(target, data);
+	await write(target, data, { encoding: 'utf-8' });
 };
 
 export const getFile = (target: string): Maybe<string> => {
@@ -18,7 +18,7 @@ export const getFile = (target: string): Maybe<string> => {
 
 	if (!existsPath) return undefined;
 
-	return readFileSync(path).toString('utf8') || undefined;
+	return readFileSync(path).toString('utf-8') || undefined;
 };
 
 export const isBrowser: boolean =

@@ -10,7 +10,11 @@
 		"url": "https://github.com/Novout/nvton/issues"
 	},
 	"homepage": "https://github.com/Novout/nvton/",
-	"author": "Giovane Cardoso",
+	"author": {
+		"email": "novout@hotmail.com",
+		"name": "Giovane Cardoso",
+		"url": "https://github.com/Novout"
+	},
 	"license": "MIT",
 	"publishConfig": {
 		"access": "public"
@@ -50,6 +54,7 @@
 		"defu": "catalog:",
 		"destr": "catalog:",
 		"fs-extra": "catalog:",
-		"pathe": "catalog:"
+		"pathe": "catalog:",
+		"uuid": "catalog:"
 	}
 }

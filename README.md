@@ -15,7 +15,7 @@
 - ✅ Local or File Object
 - ✅ Support JSON
 - ✅ Exclude Wrong Data
-- ✅ Supports Node v18+
+- ✅ Supports Node v20+
 
 ## Syntax
 

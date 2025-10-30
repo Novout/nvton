@@ -15,10 +15,12 @@ describe('LEXER', () => {
 			{
 				data: 0,
 				key: '0',
+				type: 'default',
 			},
 			{
 				data: 1,
 				key: '1',
+				type: 'default',
 			},
 		]);
 	});
@@ -27,11 +29,13 @@ describe('LEXER', () => {
 			{
 				data: 0,
 				key: '0',
+				type: 'default',
 			},
 			[
 				{
 					data: { foo: 'foo' },
 					key: 'key',
+					type: 'object',
 				},
 			],
 		]);
@@ -42,6 +46,7 @@ describe('LEXER', () => {
 				{
 					data: { foo: 'foo', bar: 'bar' },
 					key: 'key',
+					type: 'object',
 				},
 			],
 		]);

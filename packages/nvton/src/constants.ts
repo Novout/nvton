@@ -16,12 +16,17 @@ export const PIPE = '|';
 export const COMMA = ',';
 export const COLON = ':';
 export const SPACE = ' ';
+export const EMPTY = ' ';
 
 export const WRONG_KEY = '__WRONG_KEY__';
 export const NULL_KEY = '__NULL_KEY__';
+export const FAIL = '__FAIL__';
 
 export const MIMETYPE = 'text/nvton';
 export const EXTENSION = '.nvton';
+
+export const LANG_EXPOSE_INTERNALS = '?';
+export const LANG_TUPLE_KEY = '__TUPLE__-';
 
 export const DEFAULT_CONFIG = {
 	foo: 'foo',

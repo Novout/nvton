@@ -1,5 +1,5 @@
 import { destr } from 'destr';
-import { LexerType } from './types';
+import type { LexerData, LexerType } from './types';
 
 const stringObjectToObject = (raw: string) => {
 	return raw
@@ -9,6 +9,6 @@ const stringObjectToObject = (raw: string) => {
 		.replace(/'/g, '"');
 };
 
-export function parseKey<T = unknown>(raw: string, type: LexerType = 'default') {
+export function parseKey<T = LexerData>(raw: string, type: LexerType = 'default') {
 	return destr<T>(type === 'object' ? stringObjectToObject(raw) : raw, { strict: false });
 }

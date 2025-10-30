@@ -10,7 +10,7 @@ import {
 	WRONG_KEY,
 } from './constants';
 import { parseKey } from './parser';
-import { LexerResult, LexerType } from './types';
+import { LexerData, LexerResult, LexerType } from './types';
 
 export const getNVTONType = (str: string): LexerType => {
 	return str.startsWith(OPEN_BRACE) && str.endsWith(CLOSE_BRACE)
@@ -22,11 +22,14 @@ export const getNVTONType = (str: string): LexerType => {
 				: 'default';
 };
 
-const getCommonTypeCase = (str: string) => {
+const getCommonTypeCase = (str: string): { data: LexerData; type: LexerType } | true => {
 	const type = getNVTONType(str);
 
 	if (type === 'object' || type === 'default') {
-		return parseKey(str, type);
+		return {
+			data: parseKey(str, type),
+			type,
+		};
 	}
 
 	// TODO: support common and arrow functions
@@ -89,13 +92,15 @@ export const lex = (raw: string): LexerResult => {
 		if (def !== true)
 			return {
 				key: str,
-				data: def,
+				data: def.data,
+				type: def.type,
 			};
 
 		if (!isTuple(str)) return [];
 
 		return run(str, { init: { deep: 1 } })
 			.map((tuple) => {
+				// TODO run() pipe for support fuctions || operator internal parse and resolve inline operators in tuples or common (e.g ['key', data?.maybe || 10])
 				const data = tuple
 					.split(PIPE)
 					.map((tg) => tg.trim())
@@ -108,12 +113,13 @@ export const lex = (raw: string): LexerResult => {
 						? { key: data[0], value: data[0] }
 						: { key: data[0], value: data[1] };
 
-				const _data = getCommonTypeCase(structure.value);
+				const common = getCommonTypeCase(structure.value);
 
-				if (_data !== true) {
+				if (common !== true) {
 					return {
 						key: structure.key.replace(/'/g, ''),
-						data: _data,
+						type: common.type,
+						data: common.data,
 					};
 				}
 
