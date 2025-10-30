@@ -3,10 +3,10 @@ import { Awaitable, Maybe } from './types';
 import { existsSync, readFileSync, writeFileSync } from 'fs-extra';
 
 export const getPathResolve = (target: string) => path.resolve(process.cwd(), target);
-export const getPathJoin = (target: string) => path.resolve(process.cwd(), target);
+export const getPathJoin = (target: string) => path.join(process.cwd(), target);
 
 export const writeFile = (file: string, data: string): Awaitable<void> => {
-	const target = path.join(process.cwd(), file);
+	const target = getPathJoin(file);
 
 	writeFileSync(target, data);
 };

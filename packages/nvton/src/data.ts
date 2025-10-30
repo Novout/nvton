@@ -2,7 +2,7 @@ import { loadConfig } from 'c12';
 import { defu } from 'defu';
 import { Awaitable, LexerKey, LexerResult, NvtonOptions } from './types';
 import { isBrowser, writeFile } from './utils';
-import { DEFAULT_CONFIG } from './constants';
+import { DEFAULT_CONFIG, EXTENSION } from './constants';
 
 export class NVTON {
 	// TODO: unknown deep type
@@ -63,7 +63,7 @@ export class NVTON {
 			throw new Error(`Browser setups don't support write function!`);
 		}
 
-		const filepath = path.endsWith('.nvton') ? path : `${path}.nvton`;
+		const filepath = path.endsWith(EXTENSION) ? path : `${path}${EXTENSION}`;
 		// TODO: format .nvton file
 		writeFile(filepath, '');
 	}
