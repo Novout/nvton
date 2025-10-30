@@ -6,7 +6,7 @@ export default defineConfig({
 		coverage: {
 			provider: 'v8',
 			include: ['packages/**/src/**/*.ts'],
-			exclude: ['**/constants.ts', '**/types.ts', '**/index.ts'],
+			exclude: ['**/constants.ts', '**/types.ts', '**/index.ts', '**/nuxt/**'],
 		},
 	},
 });

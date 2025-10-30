@@ -32,7 +32,7 @@
 	"devDependencies": {
 		"@types/fs-extra": "^11.0.4",
 		"@types/node": "^24.9.2",
-		"@vitest/coverage-v8": "4.0.4",
+		"@vitest/coverage-v8": "4.0.5",
 		"bumpp": "^10.3.1",
 		"generi": "^1.4.1",
 		"prettier": "^3.6.2",
