@@ -9,9 +9,12 @@ export class NVTON {
 	private data: Map<LexerKey, unknown>;
 	private options: NvtonOptions = DEFAULT_CONFIG;
 
-	private loadDefaultConfig(options?: NvtonOptions): Awaitable<void> {
+	private loadDefaultConfig(
+		options?: NvtonOptions,
+		force: boolean = false
+	): Awaitable<void> {
 		try {
-			if (!isBrowser) {
+			if (!isBrowser && !force) {
 				return new Promise(async (res, rej) => {
 					const { config } = await loadConfig({
 						name: 'nvton',
@@ -31,15 +34,17 @@ export class NVTON {
 		}
 	}
 
-	constructor(lexeme: LexerResult, options?: NvtonOptions) {
+	constructor(lexeme?: LexerResult, options?: NvtonOptions) {
 		this.data = new Map();
 		this.loadDefaultConfig(options);
-		this.set(lexeme);
+		if (lexeme) this.load(lexeme);
 	}
 
-	private set(lexeme: LexerResult) {
+	public load(lexeme: LexerResult, options?: NvtonOptions) {
+		if (options) this.loadDefaultConfig(options, true);
+
 		lexeme.forEach((item) => {
-			if (Array.isArray(item)) this.set(item);
+			if (Array.isArray(item)) this.load(item);
 			else {
 				// TODO: support custom keys
 				this.data.set(item.key, item.data);
@@ -47,7 +52,8 @@ export class NVTON {
 		});
 	}
 
-	public get(target: string) {
+	// TODO: dynamic type in runtime value doens't exists
+	public get<T = unknown>(target: string) {
 		// TODO: simple language for deep search
 		return this.data.get(target);
 	}

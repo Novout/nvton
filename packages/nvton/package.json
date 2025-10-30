@@ -44,5 +44,12 @@
 		"dev": "tsdown",
 		"dev:watch": "tsdown --watch",
 		"build": "tsdown --minify"
+	},
+	"dependencies": {
+		"c12": "catalog:",
+		"defu": "catalog:",
+		"destr": "catalog:",
+		"fs-extra": "catalog:",
+		"pathe": "catalog:"
 	}
 }

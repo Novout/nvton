@@ -11,6 +11,7 @@
 
 ## Features
 
+- ✅ Vue and Nuxt Plugin
 - ✅ Local or File Object
 - ✅ Support JSON
 - ✅ Exclude Wrong Data

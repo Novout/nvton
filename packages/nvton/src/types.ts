@@ -3,7 +3,7 @@ import { NVTON } from './data';
 export type Maybe<T = void> = T | undefined | null;
 export type Awaitable<T = void> = T | Promise<T>;
 
-export type Nvton = typeof NVTON;
+export type Nvton = NVTON;
 
 export type LexerType = 'object' | 'tuple' | 'function' | 'default';
 export type LexerKey = string | number;

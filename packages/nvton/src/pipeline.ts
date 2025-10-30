@@ -1,8 +1,12 @@
 import { getFile, isBrowser } from './utils';
 import { lex } from './lexer';
 import { NVTON } from './data';
+import { NvtonOptions } from './types';
+import { DEFAULT_CONFIG } from './constants';
 
-const get = (raw: string): NVTON => {
+const get = (raw: string | false, options?: NvtonOptions): NVTON => {
+	if (!raw) return new NVTON(undefined, options ?? DEFAULT_CONFIG);
+
 	const isFilepath = raw.endsWith('.nvton');
 
 	if (isFilepath && isBrowser) {
@@ -19,7 +23,7 @@ const get = (raw: string): NVTON => {
 
 	const data = lex(resolved);
 
-	return new NVTON(data);
+	return new NVTON(data, options ?? DEFAULT_CONFIG);
 };
 
-export const nvton = (raw: string) => get(raw);
+export const nvton = (raw: string | false, options?: NvtonOptions) => get(raw, options);

@@ -1,0 +1,54 @@
+{
+	"name": "vue-nvton",
+	"author": "Novout",
+	"license": "MIT",
+	"version": "0.0.0",
+	"description": "A nvton plugin for Vue 3",
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs"
+		}
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Novout/nvton"
+	},
+	"scripts": {
+		"build": "tsdown",
+		"build:prod": "tsdown"
+	},
+	"keywords": [
+		"nvton",
+		"vue"
+	],
+	"dependencies": {
+		"nvton": "workspace:*",
+		"vue-demi": "latest"
+	},
+	"peerDependencies": {
+		"@vue/composition-api": "^1.0.0-rc.1",
+		"vue": "^2.0.0 || >=3.0.0"
+	},
+	"peerDependenciesMeta": {
+		"@vue/composition-api": {
+			"optional": true
+		}
+	},
+	"devDependencies": {
+		"vue": "^3.5.22"
+	},
+	"files": [
+		"dist",
+		"package.json"
+	],
+	"engines": {
+		"node": ">= 18"
+	}
+}

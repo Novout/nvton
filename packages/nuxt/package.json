@@ -1,0 +1,52 @@
+{
+	"name": "nuxt-nvton",
+	"sideEffects": false,
+	"author": {
+		"email": "novout@hotmail.com",
+		"name": "Giovane Cardoso",
+		"url": "https://github.com/Novout"
+	},
+	"version": "0.0.0",
+	"repository": "https://github.com/Novout/nvton",
+	"description": "A PDF document generator to your Nuxt application.",
+	"engines": {
+		"node": ">=14.16"
+	},
+	"bugs": {
+		"url": "https://github.com/betterwrite/Novout/nvton"
+	},
+	"keywords": [
+		"nvton",
+		"nuxt4"
+	],
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./dist/module.mjs",
+			"require": "./dist/module.cjs"
+		}
+	},
+	"main": "./dist/module.cjs",
+	"types": "./dist/types.d.ts",
+	"files": [
+		"dist",
+		"package.json"
+	],
+	"scripts": {
+		"todo:build": "nuxi prepare && nuxt-module-build && nuxi prepare playground",
+		"prepack": "nuxi prepare && nuxt-module-build && nuxi prepare playground"
+	},
+	"dependencies": {
+		"@nuxt/kit": "^4.2.0",
+		"defu": "catalog:",
+		"nvton": "workspace:*"
+	},
+	"devDependencies": {
+		"@nuxt/module-builder": "^1.0.2",
+		"@nuxt/schema": "^4.2.0",
+		"@nuxtjs/eslint-config-typescript": "^12.1.0",
+		"eslint": "^8.42.0",
+		"nuxt": "^4.2.0"
+	}
+}

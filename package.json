@@ -1,5 +1,5 @@
 {
-	"name": "nvton-monorepo",
+	"name": "nvton",
 	"version": "0.0.0",
 	"repository": {
 		"type": "git",
@@ -16,8 +16,10 @@
 	},
 	"private": true,
 	"scripts": {
-		"build": "pnpm run build:core",
+		"build": "pnpm -r --filter=\"./packages/**/*\" run build",
 		"build:core": "pnpm -C packages/nvton run build",
+		"build:vue": "pnpm -C packages/vue run build",
+		"build:nuxt": "pnpm -C packages/nuxt run build",
 		"format": "prettier . --write",
 		"test": "vitest run --coverage",
 		"test:dev": "vitest",
@@ -27,13 +29,6 @@
 		"publish-ci": "tsx scripts/publish-ci.ts",
 		"release": "tsx scripts/release.ts"
 	},
-	"dependencies": {
-		"c12": "^3.3.1",
-		"defu": "^6.1.4",
-		"destr": "^2.0.5",
-		"fs-extra": "^11.3.2",
-		"pathe": "^2.0.3"
-	},
 	"devDependencies": {
 		"@types/fs-extra": "^11.0.4",
 		"@types/node": "^24.9.2",
@@ -42,10 +37,10 @@
 		"generi": "^1.4.1",
 		"prettier": "^3.6.2",
 		"tinyglobby": "^0.2.15",
-		"tsdown": "^0.15.11",
+		"tsdown": "^0.15.12",
 		"tsx": "^4.20.6",
 		"typescript": "^5.9.3",
-		"vitest": "^4.0.4",
+		"vitest": "^4.0.5",
 		"zx": "^8.8.5"
 	}
 }
