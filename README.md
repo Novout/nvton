@@ -72,6 +72,7 @@ const nvt = nvton('[0]', { 'config': 'here' })
 ```ts
 {
   merge: {
+    number: false
     object: false,
   },
   warnings: {

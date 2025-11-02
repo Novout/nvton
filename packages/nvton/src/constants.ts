@@ -34,6 +34,7 @@ export const PARSER_UNDEFINED_VALUE = '__UNDEFINED__';
 
 export const DEFAULT_CONFIG = {
 	merge: {
+		number: false,
 		object: false,
 	},
 	warnings: {

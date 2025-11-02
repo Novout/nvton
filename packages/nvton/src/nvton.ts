@@ -68,7 +68,7 @@ export class NVTON {
 						name: 'nvton',
 						rcFile: false,
 						envName: false,
-            defaultConfig: DEFAULT_CONFIG
+						defaultConfig: DEFAULT_CONFIG,
 					});
 
 					this.options = defu(options, config);
@@ -127,6 +127,17 @@ export class NVTON {
 						typeof value === 'object'
 					) {
 						value = defu(value, target.value) as object;
+					}
+
+					if (
+						this.options.merge.number &&
+						target &&
+						target.value &&
+						value &&
+						typeof target.value === 'number' &&
+						typeof value === 'number'
+					) {
+						value += target.value;
 					}
 
 					this.data.set(set, {
