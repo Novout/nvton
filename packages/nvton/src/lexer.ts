@@ -59,7 +59,9 @@ export const run = (
 		lexeme = '';
 	};
 
-	for (const key of removeBrackets(raw)) {
+	const normalize = isTuple(raw) ? removeBrackets(raw) : raw;
+
+	for (const key of normalize) {
 		if (key === OPEN_BRACKET) {
 			if (deep === 0) setAndReset();
 			deep++;
@@ -101,7 +103,7 @@ export const lex = (raw: string, options?: NvtonOptions): LexerResult => {
 
 		return run(str, { init: { deep: 1 } })
 			.map((tuple, index) => {
-				// TODO run() pipe for support fuctions || operator internal parse and resolve inline operators in tuples or common (e.g ['key', data?.maybe || 10])
+				// TODO: run() pipe for support fuctions || operator internal parse and resolve inline operators in tuples or common (e.g ['key', data?.maybe || 10])
 				const data = tuple
 					.split(PIPE)
 					.map((tg) => tg.trim())
