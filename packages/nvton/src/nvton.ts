@@ -3,7 +3,6 @@ import { defu } from 'defu';
 import type {
 	Awaitable,
 	DataInternals,
-	LexerData,
 	LexerKey,
 	LexerMap,
 	LexerResult,
@@ -17,15 +16,15 @@ import {
 	CLOSE_BRACKET,
 	COMMA,
 	DEFAULT_CONFIG,
-	EMPTY,
 	EXTENSION,
 	FAIL,
-	LANG_EXPOSE_INTERNALS,
 	LANG_TUPLE_KEY,
 	OPEN_BRACKET,
+	PARSER_UNDEFINED_VALUE,
 	PIPE,
 } from './constants';
 import { lex } from './lexer';
+import { warning } from './console';
 
 const utils = () => {
 	const keySet = (_key: string, runner?: NvtonLoadRunner) => {
@@ -102,19 +101,44 @@ export class NVTON {
 		lexeme.forEach((item) => {
 			if (Array.isArray(item)) this.load(item, null, { isTuple: true });
 			else {
-				if (runner?.isTuple) this.size.raw++;
-				this.data.set(utils().keySet(item.key, runner), {
-					value: item.data,
+				if (runner?.isTuple) this.size.tuples.all.count++;
+
+				const get = utils().keyGet(item.key);
+				const set = utils().keySet(item.key, runner);
+
+				const target = this.data.get(get.raw);
+				let value = item.data;
+				if (typeof value === 'string' && value === PARSER_UNDEFINED_VALUE)
+					value = undefined;
+
+				if (
+					this.options.merge.object &&
+					target &&
+					target.value &&
+					value &&
+					typeof target.value === 'object' &&
+					typeof value === 'object'
+				) {
+					value = defu(value, target.value) as object;
+				} else {
+					if (this.options.warnings.wrongKey)
+						warning(
+							`${get.raw} exists and is ignored. use merge: { object: true } in options for merge values in object.`
+						);
+				}
+
+				this.data.set(set, {
 					type: item.type,
+					value,
 				});
 			}
 			this.size.all++;
 		});
 	}
 
-  public add(raw: string) {
-    this.load(lex(raw), null, undefined)
-  }
+	public add(raw: string) {
+		this.load(lex(raw), null, undefined);
+	}
 
 	// TODO: return type with expose internal
 	public get<T extends Maybe<boolean>>(target: string, internals?: T) {

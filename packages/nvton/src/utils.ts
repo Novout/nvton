@@ -1,5 +1,5 @@
 import path from 'pathe';
-import { Awaitable, Maybe } from './types';
+import type { Maybe } from './types';
 import { existsSync, readFileSync, writeFile as write } from 'fs-extra';
 
 export const getPathResolve = (target: string) => path.resolve(process.cwd(), target);

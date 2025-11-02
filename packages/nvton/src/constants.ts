@@ -1,3 +1,5 @@
+import { NvtonOptions } from './types';
+
 export const OPEN_BRACKET = '[';
 export const CLOSE_BRACKET = ']';
 export const OPEN_BRACE = '{';
@@ -28,10 +30,15 @@ export const EXTENSION = '.nvton';
 export const LANG_EXPOSE_INTERNALS = '?';
 export const LANG_TUPLE_KEY = '__TUPLE__-';
 
+export const PARSER_UNDEFINED_VALUE = '__UNDEFINED__';
+
 export const DEFAULT_CONFIG = {
+	merge: {
+		object: false,
+	},
 	warnings: {
 		wrongKey: false,
 	},
-};
+} as NvtonOptions;
 
 export const VITEST_MODE = 'VITEST_MODE';

@@ -20,6 +20,9 @@ export interface DataInternals {
 }
 
 export interface NvtonOptions {
+	merge: {
+		object?: boolean;
+	};
 	warnings: {
 		wrongKey?: boolean;
 	};
