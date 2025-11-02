@@ -25,6 +25,7 @@ import {
 	OPEN_BRACKET,
 	PIPE,
 } from './constants';
+import { lex } from './lexer';
 
 const utils = () => {
 	const keySet = (_key: string, runner?: NvtonLoadRunner) => {
@@ -110,6 +111,10 @@ export class NVTON {
 			this.size.all++;
 		});
 	}
+
+  public add(raw: string) {
+    this.load(lex(raw), null, undefined)
+  }
 
 	// TODO: return type with expose internal
 	public get<T extends Maybe<boolean>>(target: string, internals?: T) {
