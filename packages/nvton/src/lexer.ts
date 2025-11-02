@@ -3,6 +3,7 @@ import {
 	CLOSE_BRACE,
 	CLOSE_BRACKET,
 	COMMA,
+	EMPTY,
 	OPEN_BRACE,
 	OPEN_BRACKET,
 	OPEN_CALL,
@@ -54,9 +55,9 @@ export const run = (
 	const setAndReset = () => {
 		const target = lexeme.trim();
 
-		if (target === '') return;
+		if (target === EMPTY) return;
 		items.push(target);
-		lexeme = '';
+		lexeme = EMPTY;
 	};
 
 	const normalize = isTuple(raw) ? removeBrackets(raw) : raw;
@@ -122,7 +123,8 @@ export const lex = (raw: string, options?: NvtonOptions): LexerResult => {
 
 				if (common !== true) {
 					return {
-						key: structure.key.replace(/'/g, ''),
+						// TODO: correct normalize keys in runner for edge case problems
+						key: structure.key.replace(/'/g, '').replace(OPEN_BRACKET, ''),
 						type: common.type,
 						data: common.data,
 					};
