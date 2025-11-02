@@ -7,9 +7,19 @@ describe('NVTON', () => {
 
 		expect(data.get('0')).toEqual(0);
 	});
+	it('expect NVTON instance correct size', () => {
+		const data = nvton('[[["foo": "foo"], ["bar": "bar"], ["baz": "baz"]]]');
+
+		expect(data.info().size.all).toEqual(3);
+	});
 	it('expect error in read', () => {
 		expect(() => nvton('null.nvton')).toThrowError(
 			'null.nvton file not found or datatype is wrong!'
 		);
+	});
+	it('expect format result with correct format', () => {
+		const data = nvton('[0, 1, [["key" | "value"], ["test" | "test"]]]');
+
+		expect(data.format()).toEqual('[0, 1, [["key" | "value"], ["test" | "test"]]]');
 	});
 });

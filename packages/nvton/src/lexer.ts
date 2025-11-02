@@ -1,3 +1,4 @@
+import { warning } from './console';
 import {
 	CLOSE_BRACE,
 	CLOSE_BRACKET,
@@ -10,7 +11,7 @@ import {
 	WRONG_KEY,
 } from './constants';
 import { parseKey } from './parser';
-import { LexerData, LexerResult, LexerType } from './types';
+import { LexerData, LexerResult, LexerType, NvtonOptions } from './types';
 
 export const getNVTONType = (str: string): LexerType => {
 	return str.startsWith(OPEN_BRACE) && str.endsWith(CLOSE_BRACE)
@@ -81,7 +82,7 @@ export const run = (
 	return items.map((it) => it.trim());
 };
 
-export const lex = (raw: string): LexerResult => {
+export const lex = (raw: string, options?: NvtonOptions): LexerResult => {
 	if (!isTuple(raw)) return [];
 
 	const normalize = run(raw);
@@ -99,14 +100,18 @@ export const lex = (raw: string): LexerResult => {
 		if (!isTuple(str)) return [];
 
 		return run(str, { init: { deep: 1 } })
-			.map((tuple) => {
+			.map((tuple, index) => {
 				// TODO run() pipe for support fuctions || operator internal parse and resolve inline operators in tuples or common (e.g ['key', data?.maybe || 10])
 				const data = tuple
 					.split(PIPE)
 					.map((tg) => tg.trim())
 					.filter(Boolean);
 
-				if (data.length < 1 || data.length > 2) return WRONG_KEY;
+				if (data.length < 1 || data.length > 2) {
+					if (options?.warnings?.wrongKey)
+						warning(`error parse (${tuple}) to ${data.join('')} in ${index}index.`);
+					return WRONG_KEY;
+				}
 
 				const structure =
 					data.length === 1
@@ -124,6 +129,8 @@ export const lex = (raw: string): LexerResult => {
 				}
 
 				// TODO: support recursive tuple format
+				if (options?.warnings?.wrongKey)
+					warning(`error parse (${tuple}) to ${data.join('')} in ${index}index.`);
 				return WRONG_KEY;
 			})
 			.filter((tuple) => tuple !== WRONG_KEY);

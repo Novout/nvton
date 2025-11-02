@@ -50,6 +50,7 @@
 		"build": "tsdown --minify"
 	},
 	"dependencies": {
+		"consola": "catalog:",
 		"c12": "catalog:",
 		"defu": "catalog:",
 		"destr": "catalog:",

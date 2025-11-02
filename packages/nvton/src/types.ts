@@ -19,7 +19,11 @@ export interface DataInternals {
 	quantity: number;
 }
 
-export interface NvtonOptions {}
+export interface NvtonOptions {
+	warnings: {
+		wrongKey?: boolean;
+	};
+}
 
 export interface NvtonLoadRunner {
 	isConstructor?: boolean;

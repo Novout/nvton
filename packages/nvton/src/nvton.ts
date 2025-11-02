@@ -1,6 +1,6 @@
 import { loadConfig } from 'c12';
 import { defu } from 'defu';
-import {
+import type {
 	Awaitable,
 	DataInternals,
 	LexerData,
@@ -14,23 +14,27 @@ import {
 } from './types';
 import { isBrowser, writeFile } from './utils';
 import {
+	CLOSE_BRACKET,
+	COMMA,
 	DEFAULT_CONFIG,
 	EMPTY,
 	EXTENSION,
 	FAIL,
 	LANG_EXPOSE_INTERNALS,
 	LANG_TUPLE_KEY,
+	OPEN_BRACKET,
+	PIPE,
 } from './constants';
 
 const utils = () => {
 	const keySet = (_key: string, runner?: NvtonLoadRunner) => {
-		return runner?.isTuple ? `tuple-${_key}` : _key;
+		return runner?.isTuple ? `${LANG_TUPLE_KEY}${_key}` : _key;
 	};
 
 	const keyGet = (_key: LexerKey): UtilsKeyGet => {
 		return {
-			type: _key.startsWith('tuple-') ? 'tuple' : 'common',
-			raw: _key.replace(/(tuple-)/g, ''),
+			type: _key.startsWith(LANG_TUPLE_KEY) ? 'tuple' : 'common',
+			raw: _key.replace(LANG_TUPLE_KEY, ''),
 		};
 	};
 
@@ -38,13 +42,25 @@ const utils = () => {
 };
 
 export class NVTON {
-	private data: Map<LexerKey, LexerMap>;
+	private data: Map<LexerKey, LexerMap> = new Map();
 	private options: NvtonOptions = DEFAULT_CONFIG;
+	private size = {
+		all: 0,
+		raw: 0,
+		tuples: {
+			all: {
+				count: 0,
+			},
+			source: {
+				count: 0,
+			},
+		},
+	};
 
 	private loadDefaultConfig(
-		options?: NvtonOptions,
+		options?: Partial<NvtonOptions>,
 		external: boolean = false
-	): Awaitable<void> {
+	): Awaitable<NvtonOptions> {
 		try {
 			if (!isBrowser && !external) {
 				return new Promise(async (res) => {
@@ -56,18 +72,21 @@ export class NVTON {
 
 					this.options = defu(defu(options, config), DEFAULT_CONFIG);
 
-					res();
+					res(this.options);
 				});
 			} else {
 				this.options = defu(options, DEFAULT_CONFIG);
+
+				return this.options;
 			}
 		} catch (e) {
 			this.options = defu(options, DEFAULT_CONFIG);
+
+			return this.options;
 		}
 	}
 
 	constructor(lexeme?: LexerResult, options?: NvtonOptions) {
-		this.data = new Map();
 		this.loadDefaultConfig(options);
 		if (lexeme) this.load(lexeme, null, { isConstructor: true });
 	}
@@ -82,18 +101,18 @@ export class NVTON {
 		lexeme.forEach((item) => {
 			if (Array.isArray(item)) this.load(item, null, { isTuple: true });
 			else {
-				const key = runner?.isTuple ? `${LANG_TUPLE_KEY}${item.key}` : item.key;
-
-				this.data.set(key, { value: item.data, type: item.type });
+				if (runner?.isTuple) this.size.raw++;
+				this.data.set(utils().keySet(item.key, runner), {
+					value: item.data,
+					type: item.type,
+				});
 			}
+			this.size.all++;
 		});
 	}
 
 	// TODO: return type with expose internal
-	public get<T extends Maybe<boolean>>(
-		target: string,
-		internals?: T extends true ? DataInternals : LexerData
-	) {
+	public get<T extends Maybe<boolean>>(target: string, internals?: T) {
 		// TODO: language for deep search in foundation
 		// TODO: support recursive tuples
 		const data = this.data.get(target.replace(LANG_TUPLE_KEY, '')) as Maybe<LexerMap>;
@@ -112,37 +131,33 @@ export class NVTON {
 			} as DataInternals;
 		}
 
-		return data!.value as LexerData;
+		return data!.value;
 	}
 
-	public write(path: string, testmode = false): Awaitable<void | string> {
-		if (isBrowser) {
-			throw new Error(`Browser setups don't support write function!`);
-		}
-
-		let data = '[';
-
-		this.data.forEach((value, key, arr) => {
-			const result = String(value);
+	public format(external?: Map<LexerKey, LexerMap>) {
+		const map = external || this.data;
+		let data = OPEN_BRACKET;
+		let index = 0;
+		// TODO: support recursive tuple format
+		let deepTuple = 0;
+		map.forEach((item, key, arr) => {
+			const result = String(item.value);
 			const { type, raw } = utils().keyGet(key);
-			const max = arr.size - 1;
-			let index = 0;
-			// TODO: support recursive tuple format
-			let deepTuple = 0;
+			const maxIndex = arr.size - 1;
 
 			if (type === 'tuple') {
-				if ((deepTuple = 0)) {
-					data += `[[${raw}, ${result}]`;
+				if (deepTuple === 0) {
+					data += `${OPEN_BRACKET}${OPEN_BRACKET}${raw} ${PIPE} ${result}${CLOSE_BRACKET}`;
 				} else {
-					data += `, [${raw}, ${result}]`;
+					data += `${COMMA} ${OPEN_BRACKET}${raw} ${PIPE} ${result}${CLOSE_BRACKET}`;
 				}
 				deepTuple++;
 			} else {
 				if (deepTuple !== 0) {
-					data += `], ${result}`;
+					data += `${CLOSE_BRACKET}${COMMA} ${result}`;
 				} else {
 					data += result;
-					data += index === max ? EMPTY : ', ';
+					if (index !== maxIndex) data += `${COMMA} `;
 				}
 				deepTuple = 0;
 			}
@@ -150,14 +165,29 @@ export class NVTON {
 			index++;
 		});
 
-		data += ']';
+		if (deepTuple !== 0) data += CLOSE_BRACKET;
+		data += CLOSE_BRACKET;
 
-		if (!testmode) {
-			const filepath = path.endsWith(EXTENSION) ? path : `${path}${EXTENSION}`;
+		return data;
+	}
 
-			return writeFile(filepath, data);
-		} else {
-			return data;
+	public write(path: string) {
+		if (isBrowser) {
+			throw new Error(`Browser setups don't support write function!`);
 		}
+
+		const data = this.format();
+
+		const filepath = path.endsWith(EXTENSION) ? path : `${path}${EXTENSION}`;
+
+		return writeFile(filepath, data);
+	}
+
+	public info() {
+		return {
+			values: this.data.values(),
+			keys: this.data.keys(),
+			size: this.size,
+		};
 	}
 }

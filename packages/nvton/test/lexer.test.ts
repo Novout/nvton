@@ -5,6 +5,13 @@ describe('LEXER', () => {
 	it('expect get lex with items', () => {
 		expect(run('[0, 1]')).toEqual(['0', '1']);
 	});
+	it('expect get lex with multiple tuples', () => {
+		expect(run('[[["foo": "foo"], ["bar": "bar"], ["baz": "baz"]]]')).toEqual([
+			'["foo": "foo"]',
+			'["bar": "bar"]',
+			'["baz": "baz"]',
+		]);
+	});
 	it('expect get lex with multiple items', () => {
 		expect(run("[['key' | { foo: 'foo', bar: 'bar' }]]")).toEqual([
 			"['key' | { foo: 'foo', bar: 'bar' }]",
