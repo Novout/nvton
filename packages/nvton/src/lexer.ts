@@ -103,11 +103,9 @@ export const lex = (raw: string, options?: NvtonOptions): LexerResult => {
 
 		return run(str, { init: { deep: 1 } })
 			.map((tuple, index) => {
-				// TODO: run() pipe for support fuctions || operator internal parse and resolve inline operators in tuples or common (e.g ['key', data?.maybe || 10])
-				const data = tuple
-					.split(PIPE)
-					.map((tg) => tg.trim())
-					.filter(Boolean);
+				const [key, ...rest] = tuple.split(PIPE);
+				const value = rest.join(PIPE);
+				const data = [key, value].map((tg) => tg.trim()).filter(Boolean);
 
 				if (data.length < 1 || data.length > 2) {
 					if (options?.warnings?.wrongKey)
