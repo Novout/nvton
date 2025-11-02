@@ -50,7 +50,7 @@
 
 ## Config
 
-#### Use local config (nvton.ts)
+#### Use local config (nvton.config.ts)
 
 ```ts
 export default {

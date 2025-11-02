@@ -68,9 +68,10 @@ export class NVTON {
 						name: 'nvton',
 						rcFile: false,
 						envName: false,
+            defaultConfig: DEFAULT_CONFIG
 					});
 
-					this.options = defu(defu(options, config), DEFAULT_CONFIG);
+					this.options = defu(options, config);
 
 					res(this.options);
 				});
