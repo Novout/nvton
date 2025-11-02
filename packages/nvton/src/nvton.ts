@@ -107,30 +107,32 @@ export class NVTON {
 				const set = utils().keySet(item.key, runner);
 
 				const target = this.data.get(get.raw);
-				let value = item.data;
-				if (typeof value === 'string' && value === PARSER_UNDEFINED_VALUE)
-					value = undefined;
 
-				if (
-					this.options.merge.object &&
-					target &&
-					target.value &&
-					value &&
-					typeof target.value === 'object' &&
-					typeof value === 'object'
-				) {
-					value = defu(value, target.value) as object;
+				if (this.options.warnings.wrongKey && target) {
+					warning(
+						`${get.raw} exists and is ignored. use merge: { object: true } in options for merge values in object.`
+					);
 				} else {
-					if (this.options.warnings.wrongKey)
-						warning(
-							`${get.raw} exists and is ignored. use merge: { object: true } in options for merge values in object.`
-						);
-				}
+					let value = item.data;
+					if (typeof value === 'string' && value === PARSER_UNDEFINED_VALUE)
+						value = undefined;
 
-				this.data.set(set, {
-					type: item.type,
-					value,
-				});
+					if (
+						this.options.merge.object &&
+						target &&
+						target.value &&
+						value &&
+						typeof target.value === 'object' &&
+						typeof value === 'object'
+					) {
+						value = defu(value, target.value) as object;
+					}
+
+					this.data.set(set, {
+						type: item.type,
+						value,
+					});
+				}
 			}
 			this.size.all++;
 		});
