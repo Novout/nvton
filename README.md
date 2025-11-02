@@ -41,8 +41,44 @@
 
 ## Install
 
+`npm install -D nvton`
+`yarn add nvton`
+`pnpm add nvton`
+`bun add nvton`
+
 ### Work in Progress!!!
 
+## Config
+
+#### Use local config (nvton.ts)
+
+```ts
+export default {
+  // config here
+}
+```
+
+#### Use specific config in code
+
+```ts
+//...
+const nvt = nvton('[0]', { 'config': 'here' })
+//...
+```
+
+
+#### Default Config
+
+```ts
+{
+  merge: {
+    object: false,
+  },
+  warnings: {
+    wrongKey: false,
+  }
+}
+```
 ## Use
 
 ### Work in Progress!!!
